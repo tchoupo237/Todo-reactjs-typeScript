@@ -63,4 +63,11 @@ Assurez-vous d'avoir **Node.js** et **Git** installés sur votre machine, puis c
 
 ```bash
 git clone [https://github.com/tchoupo237/NOM-DU-DEPOT.git](https://github.com/tchoupo237/NOM-DU-DEPOT.git) && cd NOM-DU-DEPOT && npm install && npm run dev
+
+---
+## 👤 Auteur
+
+**Tchoupo Christian (WEB 3.0 ACADEMY)**
+- Étudiant en Génie Logiciel & Développeur Full-Stack
+- GitHub : [@tchoupo237](https://github.com/tchoupo237)
 ```
