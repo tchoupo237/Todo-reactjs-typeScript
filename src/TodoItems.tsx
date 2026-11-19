@@ -11,9 +11,16 @@ type Todo = {
 type Props = {
   todo: Todo;
   deleteTodo: (id: number) => void;
+  isSelected: boolean;
+  toggleSelectedTodo: (id: number) => void;
 };
 
-export default function Todoitems({ todo, deleteTodo }: Props) {
+export default function Todoitems({
+  todo,
+  deleteTodo,
+  isSelected,
+  toggleSelectedTodo,
+}: Props) {
   return (
     <li className="p-3">
       <div className="flex justify-between items-center">
@@ -21,6 +28,8 @@ export default function Todoitems({ todo, deleteTodo }: Props) {
           <input
             type="checkbox"
             className="checkbox checkbox-primary checkbox-sm"
+            checked={isSelected}
+            onChange={() => toggleSelectedTodo(todo.id)}
           />
           <span className="text-md font-bold">
             <span>{todo.text}</span>

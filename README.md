@@ -8,7 +8,7 @@
 
 <div align="center">
   <!-- Remplacez le lien ci-dessous par l'adresse de votre image d'aperçu une fois le projet publié -->
-  <img src="URL_DE_VOTRE_IMAGE_ICI" alt="Aperçu de la To-Do List TypeScript" width="100%" />
+  <img src="./public/Todo TSX.png" alt="Aperçu de la To-Do List TypeScript" width="100%" />
 </div>
 
 ---

@@ -61,11 +61,36 @@ export default function App({}: Props) {
 
   // Supprimer une tache
   function deleteTodo(id: number) {
-    const newTodos = todos.filter((todo) => todo.id !== id);
-    setTodos(newTodos);
+    // Supprimer la tâche
+    setTodos((prev) => prev.filter((todo) => todo.id !== id));
+
+    // Nettoyer également la sélection
+    setSelectedTodo((prev) => {
+      const newSelected = new Set(prev);
+      newSelected.delete(id);
+      return newSelected;
+    });
+  }
+
+  // Selectionner les taches
+  const [selectedTodo, setSelectedTodo] = useState<Set<number>>(new Set());
+  function toggleSelectedTodo(id: number) {
+    const newSelectedTodo = new Set(selectedTodo);
+    if (newSelectedTodo.has(id)) {
+      newSelectedTodo.delete(id);
+    } else {
+      newSelectedTodo.add(id);
+    }
+    setSelectedTodo(newSelectedTodo);
   }
 
   // Finir les taches
+  function finishSelected() {
+    const newTodosFinish = todos.filter((todo) => !selectedTodo.has(todo.id));
+
+    setTodos(newTodosFinish);
+    setSelectedTodo(new Set());
+  }
 
   return (
     <div className="flex justify-center">
@@ -94,30 +119,39 @@ export default function App({}: Props) {
         </div>
         {/* Btn de filtre */}
         <div className="space-y-2 flex-1 h-fit">
-          <div className="flex flex-wrap gap-4">
+          <div className="flex items-center justify-between">
+            <div className="flex flex-wrap gap-4">
+              <button
+                className={`btn btn-soft ${filter === "Tous" ? "btn-primary" : ""}`}
+                onClick={() => setFilter("Tous")}
+              >
+                Tous ({todos.length})
+              </button>
+              <button
+                className={`btn btn-soft ${filter === "Urgent" ? "btn-primary" : ""}`}
+                onClick={() => setFilter("Urgent")}
+              >
+                Urgent ({urgentCount})
+              </button>
+              <button
+                className={`btn btn-soft ${filter === "Moyenne" ? "btn-primary" : ""}`}
+                onClick={() => setFilter("Moyenne")}
+              >
+                Moyenne ({moyenneCount})
+              </button>
+              <button
+                className={`btn btn-soft ${filter === "Basse" ? "btn-primary" : ""}`}
+                onClick={() => setFilter("Basse")}
+              >
+                Basse ({basseCount})
+              </button>
+            </div>
             <button
-              className={`btn btn-soft ${filter === "Tous" ? "btn-primary" : ""}`}
-              onClick={() => setFilter("Tous")}
+              className="btn btn-primary"
+              disabled={selectedTodo.size == 0}
+              onClick={finishSelected}
             >
-              Tous ({todos.length})
-            </button>
-            <button
-              className={`btn btn-soft ${filter === "Urgent" ? "btn-primary" : ""}`}
-              onClick={() => setFilter("Urgent")}
-            >
-              Urgent ({urgentCount})
-            </button>
-            <button
-              className={`btn btn-soft ${filter === "Moyenne" ? "btn-primary" : ""}`}
-              onClick={() => setFilter("Moyenne")}
-            >
-              Moyenne ({moyenneCount})
-            </button>
-            <button
-              className={`btn btn-soft ${filter === "Basse" ? "btn-primary" : ""}`}
-              onClick={() => setFilter("Basse")}
-            >
-              Basse ({basseCount})
+              Finir la selection ({selectedTodo.size})
             </button>
           </div>
         </div>
@@ -126,7 +160,12 @@ export default function App({}: Props) {
           <ul className="divide-y divide-primary/20">
             {filteredTodos.map((todo) => (
               <li key={todo.id}>
-                <Todoitems todo={todo} deleteTodo={deleteTodo} />
+                <Todoitems
+                  todo={todo}
+                  isSelected={selectedTodo.has(todo.id)}
+                  deleteTodo={deleteTodo}
+                  toggleSelectedTodo={toggleSelectedTodo}
+                />
               </li>
             ))}
           </ul>
