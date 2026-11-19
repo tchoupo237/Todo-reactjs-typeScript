@@ -10,9 +10,10 @@ type Todo = {
 
 type Props = {
   todo: Todo;
+  deleteTodo: (id: number) => void;
 };
 
-export default function Todoitems({ todo }: Props) {
+export default function Todoitems({ todo, deleteTodo }: Props) {
   return (
     <li className="p-3">
       <div className="flex justify-between items-center">
@@ -25,19 +26,21 @@ export default function Todoitems({ todo }: Props) {
             <span>{todo.text}</span>
           </span>
           <span
-          // className={`badge badge-sm badge-soft
-          //                 ${
-          //                   todo.priority === "Urgente"
-          //                     ? "badge-error"
-          //                     : todo.priority === "Moyenne"
-          //                       ? "badge-warning"
-          //                       : "badge-success"
-          //                 }`}
+            className={`badge badge-sm badge-soft ${
+              todo.priority === "Urgent"
+                ? "badge-error"
+                : todo.priority === "Moyenne"
+                  ? "badge-warning"
+                  : "badge-success"
+            }`}
           >
             {todo.priority}
           </span>
         </div>
-        <button className="btn btn-sm btn-error btn-soft">
+        <button
+          className="btn btn-sm btn-error btn-soft"
+          onClick={() => deleteTodo(todo.id)}
+        >
           <Trash className="w-4 h-4" />
         </button>
       </div>
